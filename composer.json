@@ -22,12 +22,9 @@
     "minimum-stability": "dev",
     "extra": {
 	"laravel": {
-            "providers": [
-                "Viandwi24\\ModuleSystem\\ServiceProvider"
-            ],
-            "aliases": {
-                "Module": "Viandwi24\\ModuleSystem\\Facades\\Module"
-            }
+            "dont-discover": [
+                "*"
+            ]
         }
     }
 }
