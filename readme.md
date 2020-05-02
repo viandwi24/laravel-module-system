@@ -27,12 +27,14 @@ You can access this url on browser
     http://localhost:8000/module
 ![Preview](https://i.ibb.co/xhYXWnw/Screenshot-from-2020-05-02-09-56-33.png)
 
-For Example, you can download example module in [this link](github.com)
+For Example, you can download example module in [this link](https://github.com/viandwi24/laravel-module-system/raw/master/examples/ExampleModule.zip)
 Download Example Module, and then goto `http://localhost:8000/module` and click "Install .zip", upload examplemodule.zip
 Click, Activate in List Module 
+
 ![Preview](https://i.ibb.co/zrh4TN3/Screenshot-from-2020-05-02-10-00-32.png)
 
 Finally, goto `http://localhost:8000/tes` and you see this in browser
+
 ![Preview](https://i.ibb.co/020Jz2H/Screenshot-from-2020-05-02-10-02-04.png)
 
 Yeah, route `http://localhost:8000/tes` is a dynamic route generated from `ExampleModule`, if you modify the plugin, then when you re-access this route you will see page 404.
