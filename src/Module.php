@@ -43,6 +43,7 @@ class Module
         {
             $config = $this->getAppConfig();
             $config['list'] = $scanned_dir;
+            $config['list'] = (array) $config['list'];
             file_put_contents($this->file_config, json_encode($config, JSON_PRETTY_PRINT));
         }
 
@@ -281,6 +282,7 @@ class Module
     {
         $config = $this->getAppConfig();
         unset($config['load'][array_search( $module, $config['load'] )]);
+        $config['load'] = (array) $config['load'];
         return file_put_contents($this->file_config, json_encode($config, JSON_PRETTY_PRINT));
     }
 
@@ -292,6 +294,7 @@ class Module
     public function enable($module)
     {
         $config = $this->getAppConfig();
+        $config['load'] = (array) $config['load'];
         if (!in_array($module, $config['load'])) $config['load'][] = $module;
         return file_put_contents($this->file_config, json_encode($config, JSON_PRETTY_PRINT));
     }
