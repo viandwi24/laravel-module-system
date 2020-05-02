@@ -91,6 +91,9 @@ class Core
 
                 // register service
                 app()->make($service)->register();
+
+                // add
+                Module::setModuleRegister($module, $service);
             }
         }
     }

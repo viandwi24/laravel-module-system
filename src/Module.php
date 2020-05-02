@@ -11,7 +11,8 @@ class Module
     protected $module_config_name = '';
     protected $config = [];
     protected $modulesChecked = [];
-    protected $moswae = [];
+    protected $modulesLoaded = [];
+    protected $modulesRegister = [];
 
     /**
      * construct
@@ -100,6 +101,17 @@ class Module
     }
 
 
+    /**
+     * Srt module register
+     */
+    public function setModuleRegister($module, $service)
+    {
+        $this->modulesRegister[] = [
+            'name' => $module,
+            'service' => $service,
+        ];
+    }
+
 
     /**
      * Set Module Loaded
@@ -159,6 +171,23 @@ class Module
 
         // return
         return $result;
+    }
+
+
+    /**
+     * Module Has
+     */
+    public function has($module)
+    {
+        $search = false;
+        $modules_loaded = $this->modulesRegister;
+        foreach ($modules_loaded as $key => $val) {
+            if ($val['name'] === $module) {
+                $search = true;
+                break;
+            }
+        }
+        return $search;
     }
 
 
