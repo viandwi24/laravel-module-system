@@ -30,7 +30,10 @@
 
                         @case('error')
                             <div class="badge badge-danger">Error</div>
-                            @break                            
+                            @break    
+                            
+                        @default
+                            <div class="badge badge-danger">Disable</div>                        
                     @endswitch
                 </td>
                 <td class="text-center">
