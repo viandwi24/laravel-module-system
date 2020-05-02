@@ -19,5 +19,15 @@
 	"php": ">=7",
 	"illuminate/support": "^7"
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "extra": {
+	"laravel": {
+            "providers": [
+                "Barryvdh\\DomPDF\\ServiceProvider"
+            ],
+            "aliases": {
+                "PDF": "Barryvdh\\DomPDF\\Facade"
+            }
+        }
+    }
 }
