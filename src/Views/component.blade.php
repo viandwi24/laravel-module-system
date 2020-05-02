@@ -37,7 +37,7 @@
                     @endswitch
                 </td>
                 <td class="text-center">
-                    @if ($item->state == 'ready' || $item->state == 'not_ready')
+                    @if ($item->state == 'ready' || $item->state == 'not_ready' || $item->state == 'error')
                         @if ($item->state == 'not_ready')
                             <a href="{{ @$item->setup }}" class="link text-primary">Setup</a> |
                         @endif
