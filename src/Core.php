@@ -133,6 +133,9 @@ class Core
         $modules = Module::getModuleChecked();
         foreach($modules as $module)
         {
+            // check boot false
+            if (isset(Module::getModuleChecked($module)['boot']) && !Module::getModuleChecked($module)['boot']) continue;
+
             // get service provider class
             $service = Module::getServiceProvider($module);
 
@@ -155,6 +158,6 @@ class Core
 
     public function getVersion()
     {
-        return "1.0.3";
+        return "1.0.4";
     }
 }

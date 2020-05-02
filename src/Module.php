@@ -147,6 +147,9 @@ class Module
             $module_log['setup'] = @$check['setup'];
         }
 
+        // if 
+        if (isset($check['boot'])) $module_log['boot'] = @$check['boot'];
+
 
         $this->modulesChecked[] = $module_log;
     }
@@ -155,7 +158,7 @@ class Module
     /**
      * Get module checked
      */
-    public function getModuleChecked()
+    public function getModuleChecked($name = null)
     {
         $modules = $this->modulesChecked;
         $result = [];
@@ -165,6 +168,7 @@ class Module
         {
             if ($module['state'] == 'ready' || $module['state'] == 'not_ready')
             {
+                if ($name != null && $name == $module['name']) return $module;
                 array_push($result, $module['name']);
             }
         }

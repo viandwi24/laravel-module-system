@@ -3,7 +3,7 @@
 Add Module System to Your Laravel Application, with # Modular Application Architecture.  The concept is simple, pull out the default service provider laravel and then reprogramming it to be loaded again and controlled like a Module / Plugin.
 
 > *Specification*
-> * Core Version : 1.0.3
+> * Core Version : 1.0.4
 > * Laravel Support : 7.x
 
 # Installation
