@@ -1,34 +1,58 @@
 # Laravel Module System
 
 Add Module System to Your Laravel Application, with # Modular Application Architecture.  The concept is simple, pull out the default service provider laravel and then reprogramming it to be loaded again and controlled like a Module / Plugin.
-`Core Version : 1.0.3`
 
+> *Specification*
+> * Core Version : 1.0.3
+> * Laravel Support : 7.x
 
 # Installation
-add to your project with composer :
+Add to your project with composer :
+```
+composer require viandwi24/laravel-module-system
+```
 
-    composer require viandwi24/laravel-module-system
-add service provider to your `config/app.php`
+Add service provider to your `config/app.php`
+```
+Viandwi24\ModuleSystem\ServiceProvider::class,
+```
 
-    Viandwi24\ModuleSystem\ServiceProvider::class,
-add to aliases in `config/app.php`
+Add service provider to your `config/app.php`
+```
+'Module'  => Viandwi24\ModuleSystem\Facades\Module::class
+```
 
-    'Module'  => Viandwi24\ModuleSystem\Facades\Module::class
-and, you cant publish config 
+and, you can publish config 
+```
+php artisan vendor:publish --provider="Viandwi24\ModuleSystem\ServiceProvider"
+```
 
-    php artisan vendor:publish --provider="Viandwi24\ModuleSystem\ServiceProvider"       
 
 # Usage
-Run Laravel 
+## Default Page 
+We have a default page for control and management your module, Default Page can your access in `http://localhost:8000/module`. You can change default page url or disable this page with a change a config.
 
-    php artisan serve
+Config in `config/module.php` :
+```
+'default_page' => true,
+'default_page_prefix' => 'module',
+'default_page_middleware' => [], 
+```
+
+
+Run Laravel 
+```
+php artisan serve
+```
 
 You can access this url on browser 
-
-    http://localhost:8000/module
+```
+http://localhost:8000/module
+```
 ![Preview](https://i.ibb.co/xhYXWnw/Screenshot-from-2020-05-02-09-56-33.png)
 
-For Example, you can download example module in [this link](https://github.com/viandwi24/laravel-module-system/raw/master/examples/ExampleModule.zip)
+For Example, you can download example module in
+[this link](https://github.com/viandwi24/laravel-module-system/raw/master/examples/ExampleModule.zip)
 Download Example Module, and then goto `http://localhost:8000/module` and click "Install .zip", upload examplemodule.zip
 Click, Activate in List Module 
 
@@ -38,31 +62,118 @@ Finally, goto `http://localhost:8000/tes` and you see this in browser
 
 ![Preview](https://i.ibb.co/020Jz2H/Screenshot-from-2020-05-02-10-02-04.png)
 
-Yeah, route `http://localhost:8000/tes` is a dynamic route generated from `ExampleModule`, if you modify the plugin, then when you re-access this route you will see page 404.
+Yeah, route `http://localhost:8000/tes` is a dynamic route generated from `ExampleModule`, if you disable this plugin, then when you re-access this route you will see page 404. 
 
-# Structure
-Module yang dibuat akan berada pada `app/Modules` yang bisa diubah di `config/module.php`.
-Folder `Modules` didalamnya akan berisi folder folder module yang terpasang.
-Module yang ada dibuat berdasarkan ServiceProvider bawaan Laravel, dimanamemiliki fungsi utama Register dan Boot.
-Untuk Membuat Module baru,anda harus membuat folder baru untuk plugin anda dan membuat file bernama `module.json` didalam folder plugin kalian yang berisi :
 
+## Module Facade
+Module class menyediakan hampir keseluruhan ungsi module, anda bisa menggunakanya dengan menggunakan :
+```
+Viandwi24\ModuleSystem\Facades\Module
+```
+
+### Get List Module
+```
+Module::get();
+```
+### Enable a Module
+```
+Module::enable($module_name);
+```
+### Disable a Module
+```
+Module::disable($module_name);
+```
+
+# Make Module
+Module merupakan inspirasi dari Service Provider, Module yang ada memanfaatkan Service Provider bawaan laravel yang mudah anda ketahui.
+```
+php artisan make:module ExampleModule
+```
+
+
+# Structure Module
+Module mempunyai struktur sederhana, folder Module default berada pada `app/Modules`. dimana di sebagai contoh kita telah membuat module baru `ExampleModule` di `app/Modules/ExampleModule` dengan menggunakan perintah :
+```
+php artisan make:module ExampleModule
+```
+
+Isi File :
+* module.js
+* ExampleModuleServiceProvider
+
+## modules.js
+Merupakan file konfigurasi utama sebuah module, berisi informasi :
+```
+{
+    "name"          : "ExampleModule",
+    "description"   : "Description your module",
+    "version"       : "1.0",
+    "author"        : "viandwi24",
+    "email"         : "fiandwi0424@gmail.com",
+    "web"           : "viandwi24.github.io",
+    "namespace"     : "ExampleModule",
+    "service"       : "ExampleModuleServiceProvider"
+}
+```
+* namespace : namespace utama untuk module, jika dalam contoh maka namespace tersebut nantinya akan di parse menjadi `App\Modules\ExampleModule`
+* service : Class utama module yang akan dieksekusi, mengikut cara kerja Service Provider bawaan laravel yang dimodifikasi.
+
+##  Service Class - ExampleModuleServiceProvider.php
+File ini dieksekusi layaknya Service Provider pada Laravel, berikut struktur utamanya
+```
+<?php
+namespace App\Modules\ExampleModule;
+
+use Illuminate\Support\ServiceProvider;
+use Viandwi24\ModuleSystem\Interfaces\ModuleServiceProvider;
+
+class ExampleModuleServiceProvider extends ServiceProvider implements ModuleServiceProvider
+{
+
+    public function register()
     {
-    	"name"			:  "Example Module",
-    	"description"	:  "a Example Module",
-    	"version"		:  "1.0",
-    	"author"		:  "viandwi24",
-    	"email"			:  "fiandwi0424@gmail.com",
-    	"web"			:  "https://www.github.com/viandw24/",
-    	"namespace"		:  "ExampleModule",
-    	"service"		:  "ExampleModuleServiceProvider"
-    }`
+        //
+    }
 
- - name : merupakan nama module
- - description : deskripsikan module kalian
- - version : versi module
- - author : nama penulis
- - email : email penulis
- - web : web penulis
- - namespace : adalah Namespace yang harus digunakan disetiap module kalian, sebagai contih `ExampleModule` artinya disetiapfile yang ada harus menggunakan namespace `App\Modules\ExampleModule`
- -  service : file service provider yang akan diakses pertama kali
+    public function boot()
+    {
+        //
+    }
 
+    public function check()
+    {
+        return [
+            'state' => 'ready'
+        ];
+    }
+}
+```
+
+* register : fungsi yang akan dijalankan ketika laravel bootstraping
+* boot : fungsi yang akan dijalakan ketika semua bootstrap laravel selesai
+* check : fungsi ini di jalankan ketika setelah semua module lainya di register. ini berfungsi mengembalikan state apakah Plugin siap di load, ata belum atau mungkin ingin menampilkan suatu error.
+
+### check() method
+fungsi ini berfungsi untuk mengembalikan nilai array state.
+#### Ready
+State Ready akan membuat Module akan di booting
+```
+['state' => 'ready']
+```
+#### Not Ready
+State Not Ready akan membuat Module tetap di booting tetapi akan menampilkan peringatan bahwa Module belum siap dan butuh di setup. akan menampilkan opsi setup, nilai setup adalah berisi link untuk melakukan konfigurasi module agar bisa menjadi Ready nantinya
+```
+[
+    'state' => 'not_ready',
+    'setup' => route('my_module.setup')
+]
+```
+
+#### Error
+State Error akan membuat Module tidak akan di load dan mengeluarkan error peringatan di Module Management nantinya.
+```
+[
+    'state' => 'error',
+    'error' => 'Tidak support dengan versi laravel anda!'
+]
+```
