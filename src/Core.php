@@ -66,21 +66,7 @@ class Core
      */
     public function indexModule($saveToConfig = false)
     {
-        // scan
-        $scanned_dir = array_map(function($dir) {
-            return basename($dir);
-        }, glob($this->path . '/*', GLOB_ONLYDIR));
-        
-        // save to config file
-        if ($saveToConfig)
-        {
-            $config = Module::getAppConfig();
-            $config['list'] = $scanned_dir;
-            file_put_contents($this->file_config, json_encode($config, JSON_PRETTY_PRINT));
-        }
-
-        // return
-        return $scanned_dir;
+        Module::indexModule($saveToConfig);
     }
 
 
@@ -166,6 +152,6 @@ class Core
 
     public function getVersion()
     {
-        return "1.0.2";
+        return "1.0.3";
     }
 }

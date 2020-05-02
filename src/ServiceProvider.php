@@ -4,6 +4,7 @@ namespace Viandwi24\ModuleSystem;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use Viandwi24\ModuleSystem\Commands\MakeModuleCommand;
 use Viandwi24\ModuleSystem\Facades\Core;
 
 class ServiceProvider extends IlluminateServiceProvider
@@ -41,6 +42,12 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     public function boot()
     {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                MakeModuleCommand::class
+            ]);
+        }
+        
         // boot a modules
         $this->app->booted(function () {
             Core::boot();

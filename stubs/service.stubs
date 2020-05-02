@@ -1,0 +1,40 @@
+<?php
+namespace App\Modules\{{serviceName}};
+
+use Illuminate\Support\ServiceProvider;
+use Viandwi24\ModuleSystem\Interfaces\ModuleServiceProvider;
+
+class {{serviceNameSpace}} extends ServiceProvider implements ModuleServiceProvider
+{
+    /**
+     * Register
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+
+    /**
+     * Boot
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        //
+    }
+
+    /**
+     * Check State of Module
+     *
+     * @return array
+     */
+    public function check()
+    {
+        return [
+            'state' => 'ready'
+        ];
+    }
+}

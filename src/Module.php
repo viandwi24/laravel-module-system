@@ -25,6 +25,31 @@ class Module
         $this->config = $this->getAppConfig();
     }
 
+
+    /**
+     * Indexing a modules folder
+     * 
+     * @return array
+     */
+    public function indexModule($saveToConfig = false)
+    {
+        // scan
+        $scanned_dir = array_map(function($dir) {
+            return basename($dir);
+        }, glob($this->path . '/*', GLOB_ONLYDIR));
+        
+        // save to config file
+        if ($saveToConfig)
+        {
+            $config = $this->getAppConfig();
+            $config['list'] = $scanned_dir;
+            file_put_contents($this->file_config, json_encode($config, JSON_PRETTY_PRINT));
+        }
+
+        // return
+        return $scanned_dir;
+    }
+
     /**
      * Get Load Module
      */
