@@ -206,7 +206,8 @@ class Module
                 }
             }
         }
-        return (object) json_decode(json_encode($modules_loaded));
+        $result = (object) json_decode(json_encode($modules_loaded));
+        return (array) $result;
     }
 
 
