@@ -18,13 +18,29 @@
                 <td>{{ $item->info->version }}</td>
                 <td>{{ $item->info->author }}</td>
                 <td>
-                    <span class="badge badge-{{ ($item->state == 'active') ? 'success' : 'danger' }}">{{ $item->state }}</span>
+                    @switch($item->state)
+                        @case('ready')
+                            <div class="badge badge-success">Active</div>
+                            @break
+
+                        @case('not_ready')
+                            <div class="badge badge-success">Active</div>
+                            <div class="badge badge-warning">Must be Setup</div>
+                            @break
+
+                        @case('error')
+                            <div class="badge badge-danger">Error</div>
+                            @break                            
+                    @endswitch
                 </td>
                 <td class="text-center">
-                    @if ($item->state == 'active')
-                        <a href="{{ route('module.disable', [$item->name]) }}" class="btn btn-sm btn-danger">Disable</a>
+                    @if ($item->state == 'ready' || $item->state == 'not_ready')
+                        @if ($item->state == 'not_ready')
+                            <a href="{{ @$item->setup }}" class="link text-primary">Setup</a> |
+                        @endif
+                        <a href="{{ route('module.disable', [$item->name]) }}" class="link text-danger">Disable</a>
                     @else
-                        <a href="{{ route('module.enable', [$item->name]) }}" class="btn btn-sm btn-success">Activate</a>
+                        <a href="{{ route('module.enable', [$item->name]) }}" class="link text-success">Activate</a>
                     @endif
                 </td>
             </tr>            
