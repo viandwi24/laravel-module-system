@@ -30,9 +30,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
         // register a module
         Core::register();
-
-        // checking a module
-        Core::check();
     }
 
     /**
@@ -48,8 +45,13 @@ class ServiceProvider extends IlluminateServiceProvider
             ]);
         }
         
-        // boot a modules
+        
+        // booted
         $this->app->booted(function () {
+            // checking a module
+            Core::check();
+
+            // booting a module
             Core::boot();
         });
     }
