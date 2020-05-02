@@ -23,10 +23,10 @@
     "extra": {
 	"laravel": {
             "providers": [
-                "Barryvdh\\DomPDF\\ServiceProvider"
+                "Viandwi24\\ModuleSystem\\ModuleSystemServiceProvider"
             ],
             "aliases": {
-                "PDF": "Barryvdh\\DomPDF\\Facade"
+                "Module": "Viandwi24\\ModuleSystem\\Facades\\Module"
             }
         }
     }
