@@ -23,7 +23,7 @@
     "extra": {
 	"laravel": {
             "providers": [
-                "Viandwi24\\ModuleSystem\\ModuleSystemServiceProvider"
+                "Viandwi24\\ModuleSystem\\ServiceProvider"
             ],
             "aliases": {
                 "Module": "Viandwi24\\ModuleSystem\\Facades\\Module"

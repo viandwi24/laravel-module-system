@@ -3,10 +3,10 @@
 namespace Viandwi24\ModuleSystem;
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Viandwi24\ModuleSystem\Facades\Core;
 
-class ModuleSystemServiceProvider extends ServiceProvider
+class ServiceProvider extends IlluminateServiceProvider
 {
     /**
      * Register services.
@@ -15,6 +15,9 @@ class ModuleSystemServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // publish
+        $this->publishConfig();
+
         // config
         $this->bindConfig();
 
@@ -74,5 +77,17 @@ class ModuleSystemServiceProvider extends ServiceProvider
 
         // register route
         Route::middleware('web')->group(__DIR__ . '/Routes/route.php');
+    }
+
+
+
+    /**
+     * Publish
+     */
+    protected function publishConfig()
+    {
+        $this->publishes([
+            __DIR__.'/../config/' => base_path('config'),
+        ]);
     }
 }
