@@ -11,7 +11,7 @@ class Module
     protected $module_config_name = '';
     protected $config = [];
     protected $modulesChecked = [];
-    protected $modulesLoaded = [];
+    protected $moswae = [];
 
     /**
      * construct
@@ -170,7 +170,7 @@ class Module
     public function get()
     {
         $modules = $this->config['list'];
-        $modules_loaded = $this->modulesLoaded;
+        $modules_loaded = $this->modulesChecked;
 
         foreach($modules as $module)
         {
