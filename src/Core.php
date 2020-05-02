@@ -90,27 +90,82 @@ class Core
      */
     protected function registerModule()
     {
-        $config = app()->make('module.config');
         $modules = Module::getLoad();
         foreach($modules as $module)
         {
             if (Module::checkConfig($module))
             {
-                // get config module
-                $module_config = Module::getConfig($module);
+                // get service provider class
+                $service = Module::getServiceProvider($module);
 
-                // cehck service of module
-                if (!isset($module_config['service'])) throw new ModuleException('Module "' . $module . '" does not have a registered service.');
+                // bind service
+                app()->bind($service, function () use ($service) {
+                    return new $service(app());
+                });
 
-                // check namespace of module
-                if (!isset($module_config['namespace'])) throw new ModuleException('Module "' . $module . '" does not have a registered namespace.');
-
-                // run service of module - register
-                $namespace  = $config['module_namespace'] . $module_config['namespace'];
-                $service =  $namespace . '\\' . $module_config['service'];
-                app()->register($service);
-                Module::setModuleLoaded($module, $service);
+                // register service
+                app()->make($service)->register();
             }
         }
+    }
+
+
+    /**
+     * Checking a module
+     */
+    public function check()
+    {
+        $modules = Module::getLoad();
+        foreach($modules as $module)
+        {
+            // get service provider class
+            $service = Module::getServiceProvider($module);
+
+            // check service
+            $check = app()->make($service)->check();
+
+            // check a return value
+            if (!is_array($check)) throw new ModuleException('Module "' . $module . '" on check() method not return array. in ('. $service .')');
+
+            // check a return value must have a 'state'
+            if (!isset($check['state'])) throw new ModuleException('Module "' . $module . '" on check() method not return "state" value. in ('. $service .')');
+
+            // add
+            Module::setModuleChecked($module, $service, $check);
+        }
+    }
+
+
+    /**
+     * Booting a module
+     */
+    public function boot()
+    {
+        $modules = Module::getModuleChecked();
+        foreach($modules as $module)
+        {
+            // get service provider class
+            $service = Module::getServiceProvider($module);
+
+            // boot service
+            $boot = app()->make($service)->boot();
+
+            // add
+            Module::setModuleLoaded($module, $service);
+        }
+    }
+
+
+
+
+    /**
+     * get a version of core
+     * 
+     * @return mixed
+     */
+
+    public function getVersion()
+    {
+        return "1.0.2";
     }
 }

@@ -26,6 +26,12 @@ class ServiceProvider extends IlluminateServiceProvider
 
         // default page
         $this->defaultPage();
+
+        // register a module
+        Core::register();
+
+        // checking a module
+        Core::check();
     }
 
     /**
@@ -35,8 +41,10 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     public function boot()
     {
-        // register a modules
-        Core::register();
+        // boot a modules
+        $this->app->booted(function () {
+            Core::boot();
+        });
     }
 
 
@@ -72,11 +80,16 @@ class ServiceProvider extends IlluminateServiceProvider
     protected function defaultPage()
     {
         $config = $this->app->make('module.config');
+
         // register view
         $this->loadViewsFrom(__DIR__ . '/Views', 'ModuleSystem');
 
-        // register route
-        Route::middleware('web')->group(__DIR__ . '/Routes/route.php');
+        // 
+        if ($config['default_page'])
+        {
+            // register route
+            Route::middleware('web')->group(__DIR__ . '/Routes/route.php');
+        }
     }
 
 

@@ -10,6 +10,7 @@ class Module
     protected $file_config = '';
     protected $module_config_name = '';
     protected $config = [];
+    protected $modulesChecked = [];
     protected $modulesLoaded = [];
 
     /**
@@ -89,6 +90,53 @@ class Module
 
 
     /**
+     * Set Module Checked
+     */
+    public function setModuleChecked($module, $service, $check)
+    {
+        $module_log = [
+            'name' => $module,
+            'service' => $service,
+            'info' => $this->getConfig($module),
+            'state' => $check['state']
+        ];
+
+        if ($check['state'] == 'error')
+        {
+            $module_log['error'] = @$check['error'];
+        } else if ($check['state'] == 'not_ready')
+        {
+            $module_log['setup'] = @$check['setup'];
+        }
+
+
+        $this->modulesChecked[] = $module_log;
+    }
+
+
+    /**
+     * Get module checked
+     */
+    public function getModuleChecked()
+    {
+        $modules = $this->modulesChecked;
+        $result = [];
+
+        // get only state ready and not_ready
+        foreach($modules as $module)
+        {
+            if ($module['state'] == 'ready' || $module['state'] == 'not_ready')
+            {
+                array_push($result, $module['name']);
+            }
+        }
+
+        // return
+        return $result;
+    }
+
+
+    /**
      * Get Module
      * 
      * @return array
@@ -116,16 +164,13 @@ class Module
                 {
                     // get config module
                     $module_config = Module::getConfig($module);
-
-                    // cehck service of module
-                    if (!isset($module_config['service'])) throw new ModuleException('Module "' . $module . '" does not have a registered service.');
-
-                    // check namespace of module
-                    if (!isset($module_config['namespace'])) throw new ModuleException('Module "' . $module . '" does not have a registered namespace.');
-
-                    // add
+                    $this->checkConfigModule($module, $module_config);
+                    
+                    // defines service
                     $namespace  = $config['module_namespace'] . $module_config['namespace'];
                     $service =  $namespace . '\\' . $module_config['service'];
+                    
+                    // add
                     $modules_loaded[] = [
                         'name' => $module,
                         'service' => $service,
@@ -136,6 +181,68 @@ class Module
             }
         }
         return (object) json_decode(json_encode($modules_loaded));
+    }
+
+
+    /**
+     * Get service provider a module
+     * 
+     */
+    public function getServiceProvider($module)
+    {
+        // config
+        $config = app()->make('module.config');
+
+        // get config module
+        $module_config = $this->getConfig($module);
+        $this->checkConfigModule($module, $module_config);
+
+        // defines service
+        $namespace  = $config['module_namespace'] . $module_config['namespace'];
+        $service =  $namespace . '\\' . $module_config['service'];
+        return $service;
+    }
+
+
+    /**
+     * Load a Module
+     */
+    public function checkConfigModule($module, $module_config)
+    {
+        // modules config system
+        $config = app()->make('module.config');
+
+        /**
+         * check service of module
+         * 
+         * if error, Hint : 
+         * [+] defines "service" in your config "module.json"
+         * 
+         */
+        if (!isset($module_config['service'])) throw new ModuleException('Module "' . $module . '" does not have a registered service.');
+
+        /**
+         * check namespace of module
+         * 
+         * if error, Hint : 
+         * [+] defines "namespace" in your config "module.json"
+         * 
+         */
+        if (!isset($module_config['namespace'])) throw new ModuleException('Module "' . $module . '" does not have a registered namespace.');
+
+        // defines service
+        $namespace  = $config['module_namespace'] . $module_config['namespace'];
+        $service =  $namespace . '\\' . $module_config['service'];
+
+        /**
+         * check class service is exist
+         * 
+         * if error, Hint : 
+         * [+] check service class name
+         * [+] check service namespace name
+         * 
+         */
+        if (!class_exists($service)) throw new ModuleException('Module "' . $module . '", Service is not exists. in : ('. $service .')');
     }
 
 
@@ -160,7 +267,7 @@ class Module
     public function enable($module)
     {
         $config = $this->getAppConfig();
-        $config['load'][] = $module;
+        if (!in_array($module, $config['load'])) $config['load'][] = $module;
         return file_put_contents($this->file_config, json_encode($config, JSON_PRETTY_PRINT));
     }
 
