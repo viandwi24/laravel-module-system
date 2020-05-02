@@ -3,11 +3,16 @@
     "description": "a Module System for Laravel",
     "type": "library",
     "license": "MIT",
+    "keywords": ["laravel", "module", "plugin", "extension"],
     "authors": [
         {
             "name": "viandwi24",
             "email": "fiandwi0424@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+	"php": ">=7",
+	"illuminate/support": "^7"
+    },
+    "minimum-stability": "dev"
 }
