@@ -1,0 +1,13 @@
+{
+    "name": "viandwi24/laravel-module-system",
+    "description": "a Module System for Laravel",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "viandwi24",
+            "email": "fiandwi0424@gmail.com"
+        }
+    ],
+    "require": {}
+}
