@@ -2,10 +2,11 @@
 
 namespace Viandwi24\ModuleSystem;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use Viandwi24\ModuleSystem\Commands\MakeModuleCommand;
+use Illuminate\Support\Facades\Route;
 use Viandwi24\ModuleSystem\Facades\Core;
+use Viandwi24\ModuleSystem\Commands\MakeModuleCommand;
+use Viandwi24\ModuleSystem\Facades\Menu;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
@@ -39,12 +40,8 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     public function boot()
     {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                MakeModuleCommand::class
-            ]);
-        }
-        
+        // make command
+        $this->makeCustomCommandConsole();        
         
         // booted
         $this->app->booted(function () {
@@ -80,6 +77,9 @@ class ServiceProvider extends IlluminateServiceProvider
             $config = $this->app->make('module.config');
             return new \Viandwi24\ModuleSystem\Module($config);
         });
+        $this->app->bind('menu',function() {
+            return new \Viandwi24\ModuleSystem\Menu;
+        });
     }
 
 
@@ -111,5 +111,20 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->publishes([
             __DIR__.'/../config/' => base_path('config'),
         ]);
+    }
+
+
+
+    /**
+     * Make custom command
+     * 
+     */
+    protected function makeCustomCommandConsole()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                MakeModuleCommand::class
+            ]);
+        }
     }
 }

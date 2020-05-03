@@ -16,8 +16,9 @@
         }
     },
     "require": {
-	"php": ">=7",
-	"illuminate/support": "^7"
+        "php": ">=7",
+        "illuminate/support": "^7",
+        "adbario/php-dot-notation": "^2.2"
     },
     "minimum-stability": "dev",
     "extra": {
