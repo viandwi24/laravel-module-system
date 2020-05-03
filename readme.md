@@ -3,7 +3,7 @@
 Add Module System to Your Laravel Application, with # Modular Application Architecture.  The concept is simple, pull out the default service provider laravel and then reprogramming it to be loaded again and controlled like a Module / Plugin.
 
 > *Specification*
-> * Core Version : 1.0.4
+> * Core Version : 1.0.5
 > * Laravel Support : 7.x
 
 # Installation
@@ -124,10 +124,10 @@ File ini dieksekusi layaknya Service Provider pada Laravel, berikut struktur uta
 <?php
 namespace App\Modules\ExampleModule;
 
-use Illuminate\Support\ServiceProvider;
-use Viandwi24\ModuleSystem\Interfaces\ModuleServiceProvider;
+use Viandwi24\ModuleSystem\Base\Service;
+use Viandwi24\ModuleSystem\Interfaces\ModuleInterface;
 
-class ExampleModuleServiceProvider extends ServiceProvider implements ModuleServiceProvider
+class ExampleModuleServiceProvider extends Service implements ModuleInterface
 {
 
     public function register()
@@ -165,7 +165,7 @@ State Not Ready akan membuat Module tetap di booting tetapi akan menampilkan per
 ```
 [
     'state' => 'not_ready',
-    'setup' => route('my_module.setup')
+    'setup' => route('my_module_route.setup')
 ]
 ```
 
