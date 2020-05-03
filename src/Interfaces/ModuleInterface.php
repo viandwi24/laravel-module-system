@@ -1,7 +1,7 @@
 <?php
 namespace Viandwi24\ModuleSystem\Interfaces;
 
-interface ModuleServiceProvider
+interface ModuleInterface
 {
     public function register();
     public function boot();

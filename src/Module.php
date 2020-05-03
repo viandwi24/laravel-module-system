@@ -46,6 +46,7 @@ class Module
             $config['list'] = $scanned_dir;
             $config['list'] = (array) $config['list'];
             file_put_contents($this->file_config, json_encode($config, JSON_PRETTY_PRINT));
+            $this->config = $this->getAppConfig();
         }
 
         // return
@@ -82,7 +83,14 @@ class Module
     public function checkConfig($module)
     {
         $path = $this->path . '/' . $module . '/' . $this->module_config_name;
-        // check config file in module folder
+        
+        /**
+         * check config file in module folder
+         * Hint if error :
+         * 
+         * [+] Check config in this folder module
+         * [+] If this module not found, try to disable in modules.json
+         */
         if (!is_file($path)) throw new ModuleException('Config module "' . $module . '" not found. in : (' . $path . ')');
         return true;
     }
@@ -315,8 +323,15 @@ class Module
     public function disable($module)
     {
         $config = $this->getAppConfig();
+        
+        // check module is register ?
+        if (!in_array($module, $config['list'])) return false;
+
+        // remove
         unset($config['load'][array_search( $module, $config['load'] )]);
         $config['load'] = (array) $config['load'];
+
+        //
         return file_put_contents($this->file_config, json_encode($config, JSON_PRETTY_PRINT));
     }
 
@@ -328,8 +343,17 @@ class Module
     public function enable($module)
     {
         $config = $this->getAppConfig();
+        
+        // check module is register ?
+        if (!in_array($module, $config['list'])) return false;
+
+        //
         $config['load'] = (array) $config['load'];
+
+        // add 
         if (!in_array($module, $config['load'])) $config['load'][] = $module;
+
+        //
         return file_put_contents($this->file_config, json_encode($config, JSON_PRETTY_PRINT));
     }
 

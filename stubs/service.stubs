@@ -1,10 +1,10 @@
 <?php
 namespace App\Modules\{{serviceName}};
 
-use Illuminate\Support\ServiceProvider;
-use Viandwi24\ModuleSystem\Interfaces\ModuleServiceProvider;
+use Viandwi24\ModuleSystem\Base\Service;
+use Viandwi24\ModuleSystem\Interfaces\ModuleInterface;
 
-class {{serviceNameSpace}} extends ServiceProvider implements ModuleServiceProvider
+class {{serviceNameSpace}} extends Service implements ModuleInterface
 {
     /**
      * Register
