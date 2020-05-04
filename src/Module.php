@@ -157,6 +157,7 @@ class Module
 
         // if 
         if (isset($check['boot'])) $module_log['boot'] = @$check['boot'];
+        if (isset($check['option'])) $module_log['option'] = @$check['option'];
 
 
         $this->modulesChecked[] = $module_log;
