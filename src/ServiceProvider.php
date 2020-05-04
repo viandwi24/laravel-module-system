@@ -77,7 +77,7 @@ class ServiceProvider extends IlluminateServiceProvider
             $config = $this->app->make('module.config');
             return new \Viandwi24\ModuleSystem\Module($config);
         });
-        $this->app->bind('menu',function() {
+        $this->app->bind('viandwi24.modulesystem.menu',function() {
             return new \Viandwi24\ModuleSystem\Menu;
         });
     }

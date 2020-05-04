@@ -6,6 +6,6 @@ class Menu extends \Illuminate\Support\Facades\Facade
 {
     public static function getFacadeAccessor()
     {
-        return 'menu';
+        return 'viandwi24.modulesystem.menu';
     }
 }
