@@ -1,0 +1,16 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+Route::group([
+    'namespace' => 'App\Modules\{{moduleName}}\Controllers\\',
+    'prefix' => 'module/{{moduleNameLower}}'
+], function () {
+    
+    //
+    
+    Route::get('', function () {
+        return "hello world!";
+    });
+
+});

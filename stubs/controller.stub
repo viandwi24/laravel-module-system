@@ -1,0 +1,11 @@
+<?php
+
+namespace App\Modules\{{controllerNamespace}}\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class {{controllerName}} extends Controller
+{
+    //
+}
