@@ -331,7 +331,7 @@ class Module
         // remove
         unset($config['load'][array_search( $module, $config['load'] )]);
         $config['load'] = (array) $config['load'];
-        $config = (array) json_decode(json_encode($config), true);
+        $config = (array) json_decode(json_encode($config));
 
         //
         return file_put_contents($this->file_config, json_encode($config, JSON_PRETTY_PRINT));
@@ -354,7 +354,7 @@ class Module
 
         // add 
         if (!in_array($module, $config['load'])) $config['load'][] = $module;
-        $config = (array) json_decode(json_encode($config), true);
+        $config = (array) json_decode(json_encode($config));
 
         //
         return file_put_contents($this->file_config, json_encode($config, JSON_PRETTY_PRINT));
