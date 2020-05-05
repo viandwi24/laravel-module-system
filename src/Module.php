@@ -70,7 +70,7 @@ class Module
     public function getAppConfig()
     {
         $config = (array) json_decode(file_get_contents($this->file_config));
-        if (isset($config['load'])) 
+        if (!isset($config['load'])) 
         {
             $config['load'] = [];
             file_put_contents($this->file_config, json_encode($config, JSON_PRETTY_PRINT));
